@@ -17,6 +17,72 @@ def predict_price(area) -> float:
     """
     response = requests.get(TRAIN_DATA_URL)
     # YOUR IMPLEMENTATION HERE
+
+
+    file = open("linreg_test.csv","r")
+    f = []
+    #Repeat for each song in the text file
+    for line in file:
+      i = 0
+      #Let's split the line into an array called "fields" using the ";" as a separator:
+      fields = line.split(",")
+      f.append(fields)
+      i = i + 1
+      #and let's extract the data:
+      #train
+      #songTitle = fields[0]
+
+    #It is good practice to close the file at the end to free up resources   
+    file.close()
+
+    f[0][1:] = [float(i) for i in f[0][1:]]
+    f[1][1:] = [float(i) for i in f[1][1:]]
+    
+    test_area = np.asarray(f[0][1:])
+    #print(test_area)
+    test_price = np.asarray(f[1][1:])
+    #print(test_price)
+
+    file = open("linreg_train.csv","r")
+    g = []
+    #Repeat for each song in the text file
+    for line in file:
+      i = 0
+      #Let's split the line into an array called "fields" using the ";" as a separator:
+      fields = line.split(",")
+      g.append(fields)
+      i = i + 1
+      #and let's extract the data:
+      #train
+      #songTitle = fields[0]
+
+    #It is good practice to close the file at the end to free up resources   
+    file.close()
+
+    g[0][1:] = [float(i) for i in g[0][1:]]
+    g[1][1:] = [float(i) for i in g[1][1:]]
+    
+    train_area = np.asarray(g[0][1:])
+    print(train_area.shape)
+    train_price = np.asarray(g[1][1:])
+    #print(train_price)
+
+    from scipy import stats
+
+    slope, intercept, _, _, _ = stats.linregress(train_area, train_price)
+
+    test_price = test_area
+
+    val_price = area
+
+    for i in range(test_area.size):
+      test_price[i] = slope*test_area[i] + intercept
+
+    for i in range(area.size):
+      val_price[i] = slope*area[i] + intercept
+
+    return val_price
+
     ...
 
 
